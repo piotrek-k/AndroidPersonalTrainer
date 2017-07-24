@@ -12,6 +12,9 @@ import java.util.Date;
 
 import stfn.personaltrainer.R;
 import stfn.personaltrainer.database.DatabaseHelper;
+import stfn.personaltrainer.database.ExercisesDbHelper;
+import stfn.personaltrainer.database._ModelBasedDatabaseHelper;
+import stfn.personaltrainer.models.Exercise;
 
 /**
  * Created by Piotrek on 24/7/2017.
@@ -40,16 +43,18 @@ public class ExercicesCursorAdapter extends CursorAdapter {
         TextView day = (TextView) view.findViewById(R.id.day);
         TextView test_result = (TextView) view.findViewById(R.id.test_result);
         // Extract properties from cursor
-        String cursor_exercice_type = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_TYPE));
-        int cursor_last_exercice = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_LAST_SESSION));
-        int cursor_test_result = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_TEST_RESULT));
-        int cursor_day = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_DAY));
+//        String cursor_exercice_type = cursor.getString(cursor.getColumnIndexOrThrow(ExercisesDbHelper.GenerateNameFromField(Exercise.Type.get)));
+//        int cursor_last_exercice = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_LAST_SESSION));
+//        int cursor_test_result = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_TEST_RESULT));
+//        int cursor_day = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FeedEntry.COLUMN_NAME_DAY));
+        Exercise exercise = new Exercise();
+        exercise.LoadFromCursor(cursor);
 
-        Date dateOfLastExercice = new Date(cursor_last_exercice);
+        //Date dateOfLastExercice = new Date(cursor_last_exercice);
         // Populate fields with extracted properties
-        exerciceName.setText(cursor_exercice_type);
-        lastExercice.setText(dateOfLastExercice.toString());
-        day.setText(String.valueOf(cursor_day));
-        test_result.setText(String.valueOf(cursor_test_result));
+        exerciceName.setText(exercise.Type);
+        lastExercice.setText(exercise.LastSession.toString());
+        day.setText(String.valueOf(exercise.DayOfExercise));
+        test_result.setText(String.valueOf(exercise.TestResult));
     }
 }

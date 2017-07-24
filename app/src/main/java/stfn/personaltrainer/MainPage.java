@@ -15,13 +15,14 @@ import android.widget.ListView;
 
 import stfn.personaltrainer.adapters.ExercicesCursorAdapter;
 import stfn.personaltrainer.database.DatabaseHelper;
+import stfn.personaltrainer.database.ExercisesDbHelper;
 import stfn.personaltrainer.database._ModelBasedDatabaseHelper;
 import stfn.personaltrainer.models.Exercise;
 import stfn.personaltrainer.models._BaseModel;
 
 public class MainPage extends AppCompatActivity {
 
-    DatabaseHelper db;
+    ExercisesDbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +40,19 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
-        db = new DatabaseHelper(this);
+        db = new ExercisesDbHelper(this, new Exercise());
 
-        Cursor cursor = db.getData();
+        Cursor cursor = db.getData(new Exercise().getClass());
         ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
         ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
         exerciseItems.setAdapter(lvAdapter);
 
         //cursor.close();
-        Exercise e1 = new Exercise();
-        e1.DayOfExercise = 101;
-        e1.Type = "TEST";
-        _ModelBasedDatabaseHelper _mb = new _ModelBasedDatabaseHelper(this, new Exercise(), "Exercices");
-        _mb.GenerateContentValues(e1);
+//        Exercise e1 = new Exercise();
+//        e1.DayOfExercise = 101;
+//        e1.Type = "TEST";
+//        _ModelBasedDatabaseHelper _mb = new _ModelBasedDatabaseHelper(this, new Exercise(), "Exercices");
+//        _mb.GenerateContentValues(e1);
 
         exerciseItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

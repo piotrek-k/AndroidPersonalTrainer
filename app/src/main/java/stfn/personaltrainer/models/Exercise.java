@@ -7,9 +7,11 @@ import java.util.Date;
  */
 
 public class Exercise extends _BaseModel {
-    public Exercise(){
+    public Exercise() {
         super();
     }
+
+    public int _id;
 
     //What type of exercise it is
     public String Type;

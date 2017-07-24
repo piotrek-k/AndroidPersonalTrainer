@@ -19,7 +19,7 @@ import stfn.personaltrainer.models._BaseModel;
  */
 
 public class _ModelBasedDatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Exercices.db";
 
     public _BaseModel _bm;
@@ -57,14 +57,15 @@ public class _ModelBasedDatabaseHelper extends SQLiteOpenHelper {
             //Log.v("msgs", f.getName());
             try {
                 String name = f.getName();
-                if(!name.startsWith("_")) {
-                    Log.v("msgs", name);
+                if(!name.startsWith("_") || f.getName().equals("_id")) {
+                    Log.v("_ModelBasedDH", name);
                     Object o = f.get(obj);
                     if (o != null) {
                         if (f.getType().equals(int.class)) {
                             values.put(f.getName(), (int) o);
                         } else if (f.getType().equals(Date.class)) {
-                            values.put(f.getName(), (long) o);
+                            Date d = (Date)o;
+                            values.put(f.getName(), d.getTime());
                         } else {
                             values.put(f.getName(), o.toString());
                         }
@@ -79,17 +80,23 @@ public class _ModelBasedDatabaseHelper extends SQLiteOpenHelper {
     }
 
     //where sample model is new _BaseModel
-    public Cursor getData(Class<_BaseModel> sampleModel){
+    public Cursor getData(Class<? extends _BaseModel> sampleModel){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Field[] fields = sampleModel.getClass().getFields();
         List<String> list = new ArrayList<String>();
         for(Field f:fields){
-            list.add(f.getName());
+            if(!f.getName().startsWith("_") || f.getName().equals("_id")) {
+                list.add(f.getName());
+            }
         }
         String[] projection = new String[list.size()];
         Cursor cursor = db.query(TableName, projection, null, null, null, null, null);
 
         return cursor;
+    }
+
+    public static String GenerateNameFromField(Field f){
+        return f.getName();
     }
 }
