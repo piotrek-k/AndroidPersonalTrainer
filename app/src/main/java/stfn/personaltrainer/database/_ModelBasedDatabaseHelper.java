@@ -19,7 +19,7 @@ import stfn.personaltrainer.models._BaseModel;
  */
 
 public class _ModelBasedDatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "Exercices.db";
 
     public _BaseModel _bm;
@@ -57,7 +57,7 @@ public class _ModelBasedDatabaseHelper extends SQLiteOpenHelper {
             //Log.v("msgs", f.getName());
             try {
                 String name = f.getName();
-                if(!name.startsWith("_") || f.getName().equals("_id")) {
+                if(!name.startsWith("_")) {
                     Log.v("_ModelBasedDH", name);
                     Object o = f.get(obj);
                     if (o != null) {
