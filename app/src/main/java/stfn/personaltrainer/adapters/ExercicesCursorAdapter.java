@@ -49,7 +49,7 @@ public class ExercicesCursorAdapter extends CursorAdapter {
         // Populate fields with extracted properties
         exerciceName.setText(cursor_exercice_type);
         lastExercice.setText(dateOfLastExercice.toString());
-        //day.setText(cursor_test_result);
-        //test_result.setText(cursor_day);
+        day.setText(String.valueOf(cursor_day));
+        test_result.setText(String.valueOf(cursor_test_result));
     }
 }

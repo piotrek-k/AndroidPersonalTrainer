@@ -41,11 +41,6 @@ public class MainPage extends AppCompatActivity {
         db = new DatabaseHelper(this);
 
         Cursor cursor = db.getData();
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            Log.d("msgs", cursor.getString(cursor.getColumnIndex(DatabaseHelper.FeedEntry.COLUMN_NAME_TYPE)));
-            Log.d("msgs", cursor.getString(cursor.getColumnIndex(DatabaseHelper.FeedEntry.COLUMN_NAME_LAST_SESSION)));
-        }
-
         ListView exerciceItems = (ListView) findViewById(R.id.exercices_list_view);
         ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
         exerciceItems.setAdapter(lvAdapter);
