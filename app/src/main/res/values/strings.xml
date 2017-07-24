@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PersonalTrainer</string>
     <string name="action_settings">Settings</string>
+    <string name="last_exercice">Last exercice: </string>
+    <string name="day">Day: </string>
+    <string name="test_result">Test result: </string>
 </resources>

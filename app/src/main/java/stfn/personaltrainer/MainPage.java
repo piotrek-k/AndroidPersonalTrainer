@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import stfn.personaltrainer.adapters.ExercicesCursorAdapter;
 import stfn.personaltrainer.database.DatabaseHelper;
 
 public class MainPage extends AppCompatActivity {
@@ -43,7 +45,12 @@ public class MainPage extends AppCompatActivity {
             Log.d("msgs", cursor.getString(cursor.getColumnIndex(DatabaseHelper.FeedEntry.COLUMN_NAME_TYPE)));
             Log.d("msgs", cursor.getString(cursor.getColumnIndex(DatabaseHelper.FeedEntry.COLUMN_NAME_LAST_SESSION)));
         }
-        cursor.close();
+
+        ListView exerciceItems = (ListView) findViewById(R.id.exercices_list_view);
+        ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
+        exerciceItems.setAdapter(lvAdapter);
+
+        //cursor.close();
     }
 
     @Override
