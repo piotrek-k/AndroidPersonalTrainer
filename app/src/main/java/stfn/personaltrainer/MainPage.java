@@ -10,13 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import stfn.personaltrainer.adapters.ExercicesCursorAdapter;
 import stfn.personaltrainer.database.DatabaseHelper;
+import stfn.personaltrainer.database._ModelBasedDatabaseHelper;
+import stfn.personaltrainer.models.Exercise;
+import stfn.personaltrainer.models._BaseModel;
 
 public class MainPage extends AppCompatActivity {
 
@@ -41,11 +42,24 @@ public class MainPage extends AppCompatActivity {
         db = new DatabaseHelper(this);
 
         Cursor cursor = db.getData();
-        ListView exerciceItems = (ListView) findViewById(R.id.exercices_list_view);
+        ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
         ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
-        exerciceItems.setAdapter(lvAdapter);
+        exerciseItems.setAdapter(lvAdapter);
 
         //cursor.close();
+        Exercise e1 = new Exercise();
+        e1.DayOfExercise = 101;
+        e1.Type = "TEST";
+        _ModelBasedDatabaseHelper _mb = new _ModelBasedDatabaseHelper(this, new Exercise(), "Exercices");
+        _mb.GenerateContentValues(e1);
+
+        exerciseItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Object o = lv.getItemAtPosition(position);
+                Log.v("msgs", "TEST");
+            }
+        });
     }
 
     @Override

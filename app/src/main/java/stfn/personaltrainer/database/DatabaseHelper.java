@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.util.Date;
@@ -85,12 +86,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         };
 
         // Filter results WHERE "title" = 'My Title'
-        //String selection = FeedEntry.COLUMN_NAME_TITLE + " = ?";
-        //String[] selectionArgs = {"My Title"};
+        // String selection = FeedEntry.COLUMN_NAME_TITLE + " = ?";
+        // String[] selectionArgs = {"My Title"};
 
         // How you want the results sorted in the resulting Cursor
-//        String sortOrder =
-//                FeedEntry.COLUMN_NAME_SUBTITLE + " DESC";
+        // String sortOrder =
+        // FeedEntry.COLUMN_NAME_SUBTITLE + " DESC";
 
         Cursor cursor = db.query(
                 FeedEntry.TABLE_NAME,                     // The table to query
