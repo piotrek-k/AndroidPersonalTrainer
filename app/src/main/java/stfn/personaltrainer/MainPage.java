@@ -42,7 +42,7 @@ public class MainPage extends AppCompatActivity {
 
         db = new ExercisesDbHelper(this, new Exercise());
 
-        Cursor cursor = db.getData(new Exercise().getClass());
+        Cursor cursor = db.getData();
         ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
         ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
         exerciseItems.setAdapter(lvAdapter);

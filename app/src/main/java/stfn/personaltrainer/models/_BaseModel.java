@@ -12,51 +12,16 @@ import java.util.Date;
 
 public class _BaseModel {
 
-    //public String _TABLE_NAME;
-
-    public int TEST1;
-    public Date TEST2;
-
     public _BaseModel(){
     }
 
-    public String GenerateSQLCreateTableInstructions(String _tableName){
-        String result = "CREATE TABLE " + _tableName + " (";
+    public int _id;
 
-        Field[] fields = this.getClass().getFields();
-        boolean first = true;
-        for(Field f:fields){
-            if (first) {
-                first = false;
-            }
-            else {
-                result += ", ";
-            }
-            if(!f.getName().startsWith("_")) {
-                result += f.getName();
-
-                if (f.getType().equals(int.class)) {
-                    result += " INTEGER";
-                } else if (f.getType().equals(Date.class)) {
-                    result += " DATE";
-                } else {
-                    result += " TEXT";
-                }
-            }
-            else if(f.getName().equals("_id")){
-                result += "_id INTEGER PRIMARY KEY";
-            }
-        }
-        result += ")";
-        Log.v("msgs", "Creating database: ");
-        Log.v("msgs", result);
-        return result;
-    }
-
-    public String GenerateSQLDeleteEntriesInstructions(String _tableName){
-        return "DROP TABLE IF EXISTS " + _tableName;
-    }
-
+    /**
+     * Gets Cursor and tries to assign values to _BaseModel's name equivalents.
+     * In other words: fills current class with data from Cursor.
+     * @param cursor
+     */
     public void LoadFromCursor(Cursor cursor){
         Field[] fields = this.getClass().getFields();
         for(Field f:fields) {

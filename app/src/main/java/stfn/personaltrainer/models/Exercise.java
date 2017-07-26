@@ -11,8 +11,6 @@ public class Exercise extends _BaseModel {
         super();
     }
 
-    public int _id;
-
     //What type of exercise it is
     public String Type;
 
