@@ -1,7 +1,11 @@
 package stfn.personaltrainer;
 
+import android.arch.lifecycle.Observer;
+import android.arch.persistence.room.Room;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +17,13 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Date;
+import java.util.List;
+
 import stfn.personaltrainer.adapters.ExercicesCursorAdapter;
+import stfn.personaltrainer.adapters.ExercisesAdapter;
+import stfn.personaltrainer.daos.ExerciseDao;
+import stfn.personaltrainer.database.AppDatabase;
 import stfn.personaltrainer.database.DatabaseHelper;
 import stfn.personaltrainer.database.ExercisesDbHelper;
 import stfn.personaltrainer.database._ModelBasedDatabaseHelper;
@@ -23,6 +33,7 @@ import stfn.personaltrainer.models._BaseModel;
 public class MainPage extends AppCompatActivity {
 
     ExercisesDbHelper db;
+    ExerciseDao ed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +51,12 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
-        db = new ExercisesDbHelper(this, new Exercise());
-
-        Cursor cursor = db.getData();
-        ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
-        ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
-        exerciseItems.setAdapter(lvAdapter);
+//        db = new ExercisesDbHelper(this, new Exercise());
+//
+//        Cursor cursor = db.getData();
+//        ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
+//        ExercicesCursorAdapter lvAdapter = new ExercicesCursorAdapter(this, cursor);
+//        exerciseItems.setAdapter(lvAdapter);
 
         //cursor.close();
 //        Exercise e1 = new Exercise();
@@ -54,13 +65,82 @@ public class MainPage extends AppCompatActivity {
 //        _ModelBasedDatabaseHelper _mb = new _ModelBasedDatabaseHelper(this, new Exercise(), "Exercices");
 //        _mb.GenerateContentValues(e1);
 
-        exerciseItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        exerciseItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //Object o = lv.getItemAtPosition(position);
+//                Log.v("msgs", "TEST");
+//            }
+//        });
+
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "personal-trainer-database").build();
+
+        ed = db.exerciseDao();
+
+        updateListView();
+
+        //List<stfn.personaltrainer.entities.Exercise> items = ed.getAll();
+
+//        if(items.isEmpty()){
+//            stfn.personaltrainer.entities.Exercise pushups = new stfn.personaltrainer.entities.Exercise();
+//            pushups.setType("Push Ups");
+//            pushups.setLastSession(new Date(System.currentTimeMillis()));
+//            ed.insert(pushups);
+//
+////            stfn.personaltrainer.entities.Exercise pullups = new stfn.personaltrainer.entities.Exercise();
+////            pullups.type = "Pull Ups";
+////            pullups.lastSession = new Date(System.currentTimeMillis());
+////            pullups.testResult = 0;
+////            pullups.dayOfExercise = 1;
+////            ed.insert(pullups);
+//
+//            items = ed.getAll();
+//        }
+
+//        ExercisesAdapter lvAdapter = new ExercisesAdapter(this, items);
+//        ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
+//        exerciseItems.setAdapter(lvAdapter);
+    }
+
+    public void updateListView(){
+
+        new AsyncTask<Void, Void, List<stfn.personaltrainer.entities.Exercise>>(){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Object o = lv.getItemAtPosition(position);
-                Log.v("msgs", "TEST");
+            protected List<stfn.personaltrainer.entities.Exercise> doInBackground(Void ... params){
+                return ed.getAll();
             }
-        });
+
+            @Override
+            protected void onPostExecute(List<stfn.personaltrainer.entities.Exercise> items){
+                if(items.isEmpty()) {
+                    seedDatabase();
+                }
+                else {
+                    ExercisesAdapter lvAdapter = new ExercisesAdapter(MainPage.this, items);
+                    ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
+                    exerciseItems.setAdapter(lvAdapter);
+                }
+            }
+        }.execute();
+    }
+
+    public void seedDatabase(){
+        new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void ... params){
+                stfn.personaltrainer.entities.Exercise pushups = new stfn.personaltrainer.entities.Exercise();
+                pushups.setType("Push Ups");
+                pushups.setLastSession(new Date(System.currentTimeMillis()));
+                ed.insert(pushups);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result){
+                updateListView();
+            }
+        }.execute();
     }
 
     @Override
