@@ -1,56 +1,63 @@
 package stfn.personaltrainer;
 
-import android.arch.lifecycle.Observer;
-import android.arch.persistence.room.Room;
-import android.database.Cursor;
-import android.os.AsyncTask;
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
+import android.view.View;
 import android.widget.ListView;
 
-import java.util.Date;
-import java.util.List;
-
-import stfn.personaltrainer.adapters.ExercicesCursorAdapter;
 import stfn.personaltrainer.adapters.ExercisesAdapter;
-import stfn.personaltrainer.daos.ExerciseDao;
 import stfn.personaltrainer.database.AppDatabase;
-import stfn.personaltrainer.database.DatabaseHelper;
-import stfn.personaltrainer.database.ExercisesDbHelper;
-import stfn.personaltrainer.database._ModelBasedDatabaseHelper;
-import stfn.personaltrainer.models.Exercise;
-import stfn.personaltrainer.models._BaseModel;
+import stfn.personaltrainer.viewmodels.ExercisesViewModel;
 
-public class MainPage extends AppCompatActivity {
+//NOTE: At the time of writing this code, LiveData is not yet released as stable, so I needed to implement
+//LifecycleRegistryOwner in order to omit extending LifecycleActivity. It will be implemented in AppCompatActivity
+//in the future
 
-    ExercisesDbHelper db;
-    ExerciseDao ed;
+public class MainPage extends AppCompatActivity implements LifecycleRegistryOwner {
+
+    AppDatabase db;
+    LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+    ExercisesViewModel evm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                stfn.personaltrainer.entities.Exercise e = new stfn.personaltrainer.entities.Exercise();
+                e.setType("New exercise");
+                e.setTestResult(1000);
+                evm.insertAsync(e);
             }
         });
 
+        evm = new ExercisesViewModel(this.getApplication());
+
+        evm.getAllExercises().observe(this, exercises -> {
+            if (exercises.isEmpty()) {
+                evm.seedDatabase();
+            }
+
+            ExercisesAdapter lvAdapter = new ExercisesAdapter(MainPage.this, exercises);
+            ListView exerciseItems = findViewById(R.id.exercices_list_view);
+            exerciseItems.setAdapter(lvAdapter);
+        });
 //        db = new ExercisesDbHelper(this, new Exercise());
 //
 //        Cursor cursor = db.getData();
@@ -73,11 +80,11 @@ public class MainPage extends AppCompatActivity {
 //            }
 //        });
 
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "personal-trainer-database").build();
+        //AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "personal-trainer-database").build();
 
-        ed = db.exerciseDao();
+        //ed = db.exerciseDao();
 
-        updateListView();
+        //updateListView();
 
         //List<stfn.personaltrainer.entities.Exercise> items = ed.getAll();
 
@@ -101,52 +108,34 @@ public class MainPage extends AppCompatActivity {
 //        ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
 //        exerciseItems.setAdapter(lvAdapter);
     }
-
-    public void updateListView(){
-
-        new AsyncTask<Void, Void, List<stfn.personaltrainer.entities.Exercise>>(){
-            @Override
-            protected List<stfn.personaltrainer.entities.Exercise> doInBackground(Void ... params){
-                return ed.getAll();
-            }
-
-            @Override
-            protected void onPostExecute(List<stfn.personaltrainer.entities.Exercise> items){
-                if(items.isEmpty()) {
-                    seedDatabase();
-                }
-                else {
-                    ExercisesAdapter lvAdapter = new ExercisesAdapter(MainPage.this, items);
-                    ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
-                    exerciseItems.setAdapter(lvAdapter);
-                }
-            }
-        }.execute();
-    }
-
-    public void seedDatabase(){
-        new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected Void doInBackground(Void ... params){
-                stfn.personaltrainer.entities.Exercise pushups = new stfn.personaltrainer.entities.Exercise();
-                pushups.setType("Push Ups");
-                pushups.setLastSession(new Date(System.currentTimeMillis()));
-                ed.insert(pushups);
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result){
-                updateListView();
-            }
-        }.execute();
-    }
+//
+//    public void updateListView(){
+//
+//        new AsyncTask<Void, Void, List<stfn.personaltrainer.entities.Exercise>>(){
+//            @Override
+//            protected List<stfn.personaltrainer.entities.Exercise> doInBackground(Void ... params){
+//                return ed.getAll();
+//            }
+//
+//            @Override
+//            protected void onPostExecute(List<stfn.personaltrainer.entities.Exercise> items){
+//                if(items.isEmpty()) {
+//                    seedDatabase();
+//                }
+//                else {
+//                    ExercisesAdapter lvAdapter = new ExercisesAdapter(MainPage.this, items);
+//                    ListView exerciseItems = (ListView) findViewById(R.id.exercices_list_view);
+//                    exerciseItems.setAdapter(lvAdapter);
+//                }
+//            }
+//        }.execute();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_page, menu);
+
         return true;
     }
 
@@ -163,5 +152,10 @@ public class MainPage extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public LifecycleRegistry getLifecycle() {
+        return lifecycleRegistry;
     }
 }

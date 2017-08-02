@@ -1,5 +1,6 @@
 package stfn.personaltrainer.daos;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -17,7 +18,7 @@ import stfn.personaltrainer.entities.Exercise;
 @Dao
 public interface ExerciseDao {
     @Query("SELECT * FROM exercise")
-    List<Exercise> getAll();
+    LiveData<List<Exercise>> getAll();
 
     @Query("SELECT * FROM exercise WHERE type LIKE :name LIMIT 1")
     Exercise findByName(String name);

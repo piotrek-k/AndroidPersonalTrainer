@@ -48,7 +48,7 @@ public class Exercise {
     }
 
     public Date getLastSession() {
-        return lastSession;
+        return lastSession != null ? lastSession : new Date();
     }
 
     public void setLastSession(Date lastSession) {

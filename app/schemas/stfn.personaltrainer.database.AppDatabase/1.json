@@ -1,0 +1,52 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "152119efe2b001725eca68332225f65d",
+    "entities": [
+      {
+        "tableName": "Exercise",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`day_of_exercise` INTEGER, `last_session` INTEGER, `test_result` INTEGER, `type` TEXT, `uid` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "fields": [
+          {
+            "fieldPath": "dayOfExercise",
+            "columnName": "day_of_exercise",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "lastSession",
+            "columnName": "last_session",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "testResult",
+            "columnName": "test_result",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "uid"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"152119efe2b001725eca68332225f65d\")"
+    ]
+  }
+}
