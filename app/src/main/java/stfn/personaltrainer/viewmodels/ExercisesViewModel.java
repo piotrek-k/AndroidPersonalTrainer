@@ -39,8 +39,7 @@ public class ExercisesViewModel extends AndroidViewModel {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                Exercise pushups = new Exercise();
-                pushups.setType("Push Ups");
+                Exercise pushups = new Exercise("Push Ups");
                 pushups.setLastSession(new Date(System.currentTimeMillis()));
                 appDatabase.exerciseDao().insert(pushups);
 
