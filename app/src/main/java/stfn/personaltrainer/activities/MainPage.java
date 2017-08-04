@@ -1,16 +1,22 @@
-package stfn.personaltrainer;
+package stfn.personaltrainer.activities;
 
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Random;
+
+import stfn.personaltrainer.R;
 import stfn.personaltrainer.adapters.ExercisesAdapter;
 import stfn.personaltrainer.entities.Exercise;
 import stfn.personaltrainer.viewmodels.ExercisesViewModel;
@@ -35,17 +41,17 @@ public class MainPage extends AppCompatActivity implements LifecycleRegistryOwne
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                // .setAction("Action", null).show();
-
                 Exercise e = new Exercise("New exercise");
                 e.setTestResult(1000);
-                e.setDayOfExercise(1);
+                Random r = new Random();
+                e.setDayOfExercise(r.nextInt(6) + 1);
                 evm.insertAsync(e);
             }
         });
 
         evm = new ExercisesViewModel(this.getApplication());
+
+        ListView exerciseItems = findViewById(R.id.exercices_list_view);
 
         evm.getAllExercises().observe(this, exercises -> {
             if (exercises.isEmpty()) {
@@ -53,8 +59,18 @@ public class MainPage extends AppCompatActivity implements LifecycleRegistryOwne
             }
 
             ExercisesAdapter lvAdapter = new ExercisesAdapter(MainPage.this, exercises);
-            ListView exerciseItems = findViewById(R.id.exercices_list_view);
             exerciseItems.setAdapter(lvAdapter);
+        });
+
+        exerciseItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.v("msgs", "TEST");
+                Exercise chosenExercise = evm.getAllExercises().getValue().get(position);
+                Intent intent = new Intent(view.getContext(), Training.class);
+                intent.putExtra("ExerciseData", chosenExercise);
+                startActivity(intent);
+            }
         });
     }
 

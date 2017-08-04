@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:context="stfn.personaltrainer.activities.Training">-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="stfn.personaltrainer.activities.Training">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp">
+
+        <TextView
+            android:id="@+id/exerciceName"
+            android:layout_width="277dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="Exercice name"
+            android:textAlignment="center"
+            android:textSize="36sp"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/progressBarContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exerciceName">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:max="6000"
+                android:progress="5000"
+                android:progressDrawable="@drawable/circle_progress_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="5/6"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:orientation="horizontal"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarContainer">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/day" />
+
+            <TextView
+                android:id="@+id/whatDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="11dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/series_done" />
+
+            <TextView
+                android:id="@+id/series_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="27dp"
+            android:layout_weight="1"
+            android:text="@string/repetitions_to_make"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <TextView
+            android:id="@+id/repetitionsInCurrentSeries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <Button
+            android:id="@+id/repetitionsDone"
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:onClick="goToNextSeries"
+            android:text="@string/done"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repetitionsInCurrentSeries" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView><!--</android.support.constraint.ConstraintLayout>-->

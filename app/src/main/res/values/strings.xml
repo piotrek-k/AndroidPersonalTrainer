@@ -4,4 +4,7 @@
     <string name="last_exercice">Last exercice: </string>
     <string name="day">Day: </string>
     <string name="test_result">Test result: </string>
+    <string name="repetitions_to_make">Repetitions to make</string>
+    <string name="series_done">Series done:</string>
+    <string name="done">Done</string>
 </resources>

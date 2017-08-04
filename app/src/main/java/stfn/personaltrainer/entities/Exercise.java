@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Exercise {
+public class Exercise implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int uid;
     //What type of exercise it is
