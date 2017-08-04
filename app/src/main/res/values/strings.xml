@@ -4,7 +4,10 @@
     <string name="last_exercice">Last exercice: </string>
     <string name="day">Day: </string>
     <string name="test_result">Test result: </string>
-    <string name="repetitions_to_make">Repetitions to make</string>
-    <string name="series_done">Series done:</string>
+    <string name="repetitions_to_make">Repetitions to make: </string>
+    <string name="text_round_done">Series done:</string>
     <string name="done">Done</string>
+    <string name="your_current_progress">Your current progress:</string>
+    <string name="current_training">Current training:</string>
+    <string name="round_done">Round done</string>
 </resources>

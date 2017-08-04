@@ -41,10 +41,10 @@ public class MainPage extends AppCompatActivity implements LifecycleRegistryOwne
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Exercise e = new Exercise("New exercise");
-                e.setTestResult(1000);
+                Exercise e = new Exercise("Pompki");
+                e.setTestResult(23);
                 Random r = new Random();
-                e.setDayOfExercise(r.nextInt(6) + 1);
+                e.setDayOfExercise(1);
                 evm.insertAsync(e);
             }
         });
