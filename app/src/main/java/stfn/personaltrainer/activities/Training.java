@@ -1,6 +1,7 @@
 package stfn.personaltrainer.activities;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -11,12 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import stfn.personaltrainer.R;
+import stfn.personaltrainer.datacontainers.TrainingToPlanAndTimer;
 import stfn.personaltrainer.entities.Exercise;
 
 public class Training extends AppCompatActivity {
 
     private int SeriesDone = 1;
-    private int RepetitionsToMake = 0;
     private Exercise exercise;
 
     @Override
@@ -40,27 +41,26 @@ public class Training extends AppCompatActivity {
 
         TextView textProgress = findViewById(R.id.textProgress);
         textProgress.setText(String.valueOf(exercise.getDayOfExercise()) + "/6");
-
-        updateView();
     }
 
-    public void goToNextSeries(View view) {
-        if (SeriesDone < 5) {
-            SeriesDone++;
-            updateView();
-        }
-    }
+    public void goToPlanAndTimer(View view) {
+        TrainingToPlanAndTimer trainingToPlanAndTimer = new TrainingToPlanAndTimer();
 
-    public void updateView() {
         Resources res = getResources();
         TypedArray factors = res.obtainTypedArray(R.array.pushups);
         String[] rounds = factors.getString(exercise.getDayOfExercise() - 1).split(";");
 
-        RepetitionsToMake = Math.round(Float.parseFloat(rounds[SeriesDone - 1]) * exercise.getTestResult());
+        trainingToPlanAndTimer.NumberOfAllRounds = rounds.length;
+        trainingToPlanAndTimer.ExerciseName = exercise.getType();
+        for (String r : rounds) {
+            int repsPerRound = Math.round(Float.parseFloat(r) * exercise.getTestResult());
+            trainingToPlanAndTimer.RepetitionsPerRound.add(repsPerRound);
+        }
+        //TODO: Add ability to change SecondsBetweenRounds value
+        trainingToPlanAndTimer.SecondsBetweenRounds = 60;
 
-        TextView series_number = findViewById(R.id.series_number);
-        series_number.setText(String.valueOf(SeriesDone));
-        TextView repetitionsInCurrentSeries = findViewById(R.id.repetitionsInCurrentSeries);
-        repetitionsInCurrentSeries.setText(String.valueOf(RepetitionsToMake));
+        Intent intent = new Intent(view.getContext(), PlanAndTimer.class);
+        intent.putExtra("SentData", trainingToPlanAndTimer);
+        startActivity(intent);
     }
 }

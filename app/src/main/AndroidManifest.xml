@@ -20,7 +20,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Training"></activity>
+        <activity android:name=".activities.Training">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainPage" />
+        </activity>
+        <activity
+            android:name=".activities.PlanAndTimer"
+            android:label="@string/title_activity_plan_and_timer"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.Training" />
+        </activity>
     </application>
 
 </manifest>

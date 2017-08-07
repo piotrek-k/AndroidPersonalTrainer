@@ -69,4 +69,16 @@ public class ExercisesViewModel extends AndroidViewModel {
             }
         }.execute();
     }
+
+    public void updateExerciseNextDayAsync(int exerciseId) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                //appDatabase.exerciseDao().up
+                //TODO: Make SQL update query
+
+                return null;
+            }
+        }.execute();
+    }
 }

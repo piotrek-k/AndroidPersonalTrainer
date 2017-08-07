@@ -10,4 +10,10 @@
     <string name="your_current_progress">Your current progress:</string>
     <string name="current_training">Current training:</string>
     <string name="round_done">Round done</string>
+    <string name="title_activity_plan_and_timer">PlanAndTimer</string>
+
+    <string name="roundOutOf" formatted="false">Round %d out of %d</string>
+    <string name="ceaseWaiting">Cease waiting</string>
+    <string name="trainingCompleted">Training completed</string>
+    <string name="startTraining">Start training</string>
 </resources>
