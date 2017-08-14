@@ -23,6 +23,9 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercise WHERE type LIKE :name LIMIT 1")
     Exercise findByName(String name);
 
+    @Query("SELECT * FROM exercise WHERE uid LIKE :uid LIMIT 1")
+    LiveData<Exercise> findById(int uid);
+
     @Insert
     void insertAll(List<Exercise> products);
 

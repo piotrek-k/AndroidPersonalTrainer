@@ -35,6 +35,10 @@ public class ExercisesViewModel extends AndroidViewModel {
         return allExercises;
     }
 
+    public LiveData<Exercise> getExerciseById(int id) {
+        return appDatabase.exerciseDao().findById(id);
+    }
+
     public void seedDatabase() {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -70,13 +74,23 @@ public class ExercisesViewModel extends AndroidViewModel {
         }.execute();
     }
 
-    public void updateExerciseNextDayAsync(int exerciseId) {
+    /**
+     * Set next day to exercise and update database
+     *
+     * @param exercise        Exercise to change
+     * @param maxNumberOfDays After what value should number of days be set to zero
+     */
+    public void setNextDayToExercise(Exercise exercise, int maxNumberOfDays) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 //appDatabase.exerciseDao().up
                 //TODO: Make SQL update query
-
+                exercise.setDayOfExercise(exercise.getDayOfExercise() + 1);
+                if (exercise.getDayOfExercise() > maxNumberOfDays) {
+                    exercise.setDayOfExercise(0);
+                }
+                appDatabase.exerciseDao().update(exercise);
                 return null;
             }
         }.execute();

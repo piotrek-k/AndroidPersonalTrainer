@@ -78,5 +78,4 @@ public class Exercise implements Serializable {
         this.dayOfExercise = dayOfExercise;
     }
 
-
 }

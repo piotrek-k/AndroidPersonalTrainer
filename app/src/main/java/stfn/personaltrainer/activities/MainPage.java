@@ -68,7 +68,7 @@ public class MainPage extends AppCompatActivity implements LifecycleRegistryOwne
                 Log.v("msgs", "TEST");
                 Exercise chosenExercise = evm.getAllExercises().getValue().get(position);
                 Intent intent = new Intent(view.getContext(), Training.class);
-                intent.putExtra("ExerciseData", chosenExercise);
+                intent.putExtra("ExerciseData", chosenExercise.getUid());
                 startActivity(intent);
             }
         });

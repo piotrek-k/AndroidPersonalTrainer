@@ -59,7 +59,7 @@ public class PlanAndTimer extends AppCompatActivity {
         });
 
         TextView exerciseName = findViewById(R.id.exerciseName);
-        exerciseName.setText(data.ExerciseName);
+        exerciseName.setText(data.exercise.getType());
 
         roundInfo = findViewById(R.id.roundInfo);
         cpatLayout = findViewById(R.id.cpatLayout);
@@ -70,7 +70,7 @@ public class PlanAndTimer extends AppCompatActivity {
     }
 
     public void goToNextRound(View view) {
-        if (CurrentRound <= data.NumberOfAllRounds && !counterIsWorking) {
+        if (CurrentRound < data.NumberOfAllRounds && !counterIsWorking) {
             switchToBreakTimeView();
             cdt = new CountDownTimer(data.SecondsBetweenRounds * 1000, 1000) {
 
@@ -90,10 +90,12 @@ public class PlanAndTimer extends AppCompatActivity {
                 }
             }.start();
         } else if (CurrentRound > data.NumberOfAllRounds) {
-            //TODO: Return to main page, save data
-
+            evm.setNextDayToExercise(data.exercise, data.NumberOfAllDays);
+            finish();
         } else if (counterIsWorking) {
             cdt.cancel();
+            countingFinished();
+        } else if (CurrentRound == data.NumberOfAllRounds) {
             countingFinished();
         }
     }
