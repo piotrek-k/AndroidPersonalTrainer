@@ -33,6 +33,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.Training" />
         </activity>
+        <activity android:name=".activities.Test">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.Training" />
+        </activity>
     </application>
 
 </manifest>

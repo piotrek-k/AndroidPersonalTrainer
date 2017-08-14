@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -78,18 +79,23 @@ public class ExercisesViewModel extends AndroidViewModel {
      * Set next day to exercise and update database
      *
      * @param exercise        Exercise to change
-     * @param maxNumberOfDays After what value should number of days be set to zero
      */
-    public void setNextDayToExercise(Exercise exercise, int maxNumberOfDays) {
+    public void setNextDayToExercise(Exercise exercise) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                //appDatabase.exerciseDao().up
-                //TODO: Make SQL update query
                 exercise.setDayOfExercise(exercise.getDayOfExercise() + 1);
-                if (exercise.getDayOfExercise() > maxNumberOfDays) {
-                    exercise.setDayOfExercise(0);
-                }
+                exercise.setLastSession(Calendar.getInstance().getTime());
+                appDatabase.exerciseDao().update(exercise);
+                return null;
+            }
+        }.execute();
+    }
+
+    public void updateAsync(Exercise exercise) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
                 appDatabase.exerciseDao().update(exercise);
                 return null;
             }

@@ -16,4 +16,7 @@
     <string name="ceaseWaiting">Cease waiting</string>
     <string name="trainingCompleted">Training completed</string>
     <string name="startTraining">Start training</string>
+    <string name="test">Test</string>
+    <string name="test_description">Make as many repetitions as you can, then type it below</string>
+    <string name="beginTest">Begin test</string>
 </resources>

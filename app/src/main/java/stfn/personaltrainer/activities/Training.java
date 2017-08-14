@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ public class Training extends AppCompatActivity implements LifecycleRegistryOwne
 
     ExercisesViewModel evm;
     LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+    Button repetitionsDoneButton;
+    Resources res;
     private int SeriesDone = 1;
     private Exercise exercise;
     private int exerciseId;
@@ -32,8 +35,11 @@ public class Training extends AppCompatActivity implements LifecycleRegistryOwne
         setContentView(R.layout.activity_training);
 
         evm = new ExercisesViewModel(this.getApplication());
+        res = getResources();
 
         exerciseId = (int) getIntent().getSerializableExtra("ExerciseData");
+
+        repetitionsDoneButton = findViewById(R.id.repetitionsDone);
 
         evm.getExerciseById(exerciseId).observe(this, _exercise -> {
             int previousDayOfExercise = exercise != null ? exercise.getDayOfExercise() : 0;
@@ -50,39 +56,51 @@ public class Training extends AppCompatActivity implements LifecycleRegistryOwne
             exerciseName.setText(exercise.getType());
 
             TextView whatDay = findViewById(R.id.whatDay);
+            TextView textProgress = findViewById(R.id.textProgress);
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+
+            if (exercise.getDayOfExercise() <= 6) {
+                textProgress.setText(String.valueOf(exercise.getDayOfExercise()) + "/6");
+                repetitionsDoneButton.setText(String.valueOf(res.getString(R.string.startTraining)));
+            } else {
+                textProgress.setText(String.valueOf(res.getString(R.string.test)));
+                repetitionsDoneButton.setText(String.valueOf(res.getString(R.string.beginTest)));
+            }
+
             whatDay.setText(exercise.getDayOfExercise() + "");
 
-            ProgressBar progressBar = findViewById(R.id.progressBar);
             ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", animateFromSomePrebiousDay ? previousDayOfExercise * 1000 : 0, exercise.getDayOfExercise() * 1000); // animate from 0 to exercise.getDayOfExercise()*1000 (6000 is max)
             animation.setDuration(2500); //in milliseconds
             animation.setInterpolator(new DecelerateInterpolator());
             animation.start();
-
-            TextView textProgress = findViewById(R.id.textProgress);
-            textProgress.setText(String.valueOf(exercise.getDayOfExercise()) + "/6");
         });
     }
 
-    public void goToPlanAndTimer(View view) {
-        TrainingToPlanAndTimer trainingToPlanAndTimer = new TrainingToPlanAndTimer();
+    public void goToPlanAndTimerOrTest(View view) {
+        if (exercise.getDayOfExercise() <= 6) {
+            TrainingToPlanAndTimer trainingToPlanAndTimer = new TrainingToPlanAndTimer();
 
-        Resources res = getResources();
-        TypedArray factors = res.obtainTypedArray(R.array.pushups);
-        String[] rounds = factors.getString(exercise.getDayOfExercise() - 1).split(";");
+            TypedArray factors = res.obtainTypedArray(R.array.pushups);
+            String[] rounds = factors.getString(exercise.getDayOfExercise() - 1).split(";");
 
-        trainingToPlanAndTimer.NumberOfAllRounds = rounds.length;
-        trainingToPlanAndTimer.NumberOfAllDays = factors.length();
-        trainingToPlanAndTimer.exercise = exercise;
-        for (String r : rounds) {
-            int repsPerRound = Math.round(Float.parseFloat(r) * exercise.getTestResult());
-            trainingToPlanAndTimer.RepetitionsPerRound.add(repsPerRound);
+            trainingToPlanAndTimer.NumberOfAllRounds = rounds.length;
+            trainingToPlanAndTimer.NumberOfAllDays = factors.length();
+            trainingToPlanAndTimer.exercise = exercise;
+            for (String r : rounds) {
+                int repsPerRound = Math.round(Float.parseFloat(r) * exercise.getTestResult());
+                trainingToPlanAndTimer.RepetitionsPerRound.add(repsPerRound);
+            }
+            //TODO: Add ability to change SecondsBetweenRounds value
+            trainingToPlanAndTimer.SecondsBetweenRounds = 60;
+
+            Intent intent = new Intent(view.getContext(), PlanAndTimer.class);
+            intent.putExtra("SentData", trainingToPlanAndTimer);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(view.getContext(), Test.class);
+            intent.putExtra("Exercise", exercise);
+            startActivity(intent);
         }
-        //TODO: Add ability to change SecondsBetweenRounds value
-        trainingToPlanAndTimer.SecondsBetweenRounds = 60;
-
-        Intent intent = new Intent(view.getContext(), PlanAndTimer.class);
-        intent.putExtra("SentData", trainingToPlanAndTimer);
-        startActivity(intent);
     }
 
     @Override
