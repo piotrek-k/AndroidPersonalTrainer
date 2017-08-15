@@ -17,6 +17,7 @@ public class TrainingToPlanAndTimer implements Serializable {
     public int SecondsBetweenRounds;
     public int NumberOfAllRounds;
     public int NumberOfAllDays;
+    public int DayBreak;
 
     public TrainingToPlanAndTimer() {
         RepetitionsPerRound = new ArrayList<Integer>();

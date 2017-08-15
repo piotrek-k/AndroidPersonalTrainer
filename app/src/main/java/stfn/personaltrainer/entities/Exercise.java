@@ -28,6 +28,16 @@ public class Exercise implements Serializable {
     //Which day of plan it is
     @ColumnInfo(name = "day_of_exercise")
     private int dayOfExercise;
+    /**
+     * Id of related data stored in app resources (like factors)
+     */
+    @ColumnInfo(name = "resources_id")
+    private int resourcesId;
+    /**
+     * Where will next training day begin
+     */
+    @ColumnInfo(name = "next_workout")
+    private Date nextWorkout;
 
     public Exercise() {
 
@@ -36,6 +46,7 @@ public class Exercise implements Serializable {
     public Exercise(String _type) {
         type = _type;
         lastSession = Calendar.getInstance().getTime();
+        nextWorkout = lastSession;
     }
 
     public int getUid() {
@@ -78,4 +89,22 @@ public class Exercise implements Serializable {
         this.dayOfExercise = dayOfExercise;
     }
 
+    public int getResourcesId() {
+        return resourcesId;
+    }
+
+    public void setResourcesId(int resourcesId) {
+        this.resourcesId = resourcesId;
+    }
+
+    public Date getNextWorkout() {
+        if (nextWorkout == null) {
+            return lastSession;
+        }
+        return nextWorkout;
+    }
+
+    public void setNextWorkout(Date nextWorkout) {
+        this.nextWorkout = nextWorkout;
+    }
 }

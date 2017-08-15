@@ -80,12 +80,16 @@ public class ExercisesViewModel extends AndroidViewModel {
      *
      * @param exercise        Exercise to change
      */
-    public void setNextDayToExercise(Exercise exercise) {
+    public void setNextDayToExercise(Exercise exercise, int dayBreak) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 exercise.setDayOfExercise(exercise.getDayOfExercise() + 1);
                 exercise.setLastSession(Calendar.getInstance().getTime());
+                Calendar c = Calendar.getInstance();
+                c.setTime(exercise.getLastSession());
+                c.add(Calendar.DAY_OF_MONTH, dayBreak);
+                exercise.setNextWorkout(c.getTime());
                 appDatabase.exerciseDao().update(exercise);
                 return null;
             }

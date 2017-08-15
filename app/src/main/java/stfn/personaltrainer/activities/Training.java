@@ -59,7 +59,7 @@ public class Training extends AppCompatActivity implements LifecycleRegistryOwne
             TextView textProgress = findViewById(R.id.textProgress);
             ProgressBar progressBar = findViewById(R.id.progressBar);
 
-            if (exercise.getDayOfExercise() <= 6) {
+            if (exercise.getDayOfExercise() <= 6 && exercise.getDayOfExercise() > 0) {
                 textProgress.setText(String.valueOf(exercise.getDayOfExercise()) + "/6");
                 repetitionsDoneButton.setText(String.valueOf(res.getString(R.string.startTraining)));
             } else {
@@ -77,15 +77,20 @@ public class Training extends AppCompatActivity implements LifecycleRegistryOwne
     }
 
     public void goToPlanAndTimerOrTest(View view) {
-        if (exercise.getDayOfExercise() <= 6) {
+        if (exercise.getDayOfExercise() <= 6 && exercise.getDayOfExercise() > 0) {
             TrainingToPlanAndTimer trainingToPlanAndTimer = new TrainingToPlanAndTimer();
 
-            TypedArray factors = res.obtainTypedArray(R.array.pushups);
+            int resId = getResources().getIdentifier("array/factors_" + exercise.getResourcesId(), null, this.getPackageName());
+            TypedArray factors = res.obtainTypedArray(resId);
             String[] rounds = factors.getString(exercise.getDayOfExercise() - 1).split(";");
+            int resBreaksId = getResources().getIdentifier("array/break_" + exercise.getResourcesId(), null, this.getPackageName());
+            TypedArray breaks = res.obtainTypedArray(resBreaksId);
+            int currentDayBreak = breaks.getInt(exercise.getDayOfExercise() - 1, 0);
 
             trainingToPlanAndTimer.NumberOfAllRounds = rounds.length;
             trainingToPlanAndTimer.NumberOfAllDays = factors.length();
             trainingToPlanAndTimer.exercise = exercise;
+            trainingToPlanAndTimer.DayBreak = currentDayBreak;
             for (String r : rounds) {
                 int repsPerRound = Math.round(Float.parseFloat(r) * exercise.getTestResult());
                 trainingToPlanAndTimer.RepetitionsPerRound.add(repsPerRound);

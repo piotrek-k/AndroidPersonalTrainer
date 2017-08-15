@@ -13,7 +13,7 @@ import stfn.personaltrainer.entities.Exercise;
  * Created by Piotrek on 28/7/2017.
  */
 
-@Database(entities = {Exercise.class}, version = 3)
+@Database(entities = {Exercise.class}, version = 4)
 @TypeConverters(Converters.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -22,7 +22,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
-                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "borrow_db").fallbackToDestructiveMigration()
+                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "exercises_app").fallbackToDestructiveMigration()
                             .build();
         }
         return INSTANCE;

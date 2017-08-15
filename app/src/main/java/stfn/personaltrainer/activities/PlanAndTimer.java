@@ -90,7 +90,7 @@ public class PlanAndTimer extends AppCompatActivity {
                 }
             }.start();
         } else if (CurrentRound > data.NumberOfAllRounds) {
-            evm.setNextDayToExercise(data.exercise);
+            evm.setNextDayToExercise(data.exercise, data.DayBreak);
             finish();
         } else if (counterIsWorking) {
             cdt.cancel();

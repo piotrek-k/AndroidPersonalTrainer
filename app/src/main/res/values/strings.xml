@@ -19,4 +19,13 @@
     <string name="test">Test</string>
     <string name="test_description">Make as many repetitions as you can, then type it below</string>
     <string name="beginTest">Begin test</string>
+    <string name="title_activity_add_new_exercise">AddNewExercise</string>
+    <string name="title_add_new">Add new exercise</string>
+
+    <!-- It's connected with factors.xml values -->
+    <string-array name="exercises_to_choose">
+        <item>Pushups</item>
+        <item>Pullups</item>
+        <item>Squats</item>
+    </string-array>
 </resources>

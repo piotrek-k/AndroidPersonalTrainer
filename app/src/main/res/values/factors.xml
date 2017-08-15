@@ -1,11 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="pushups">
+    <array name="factors_0">
+        <!--Pushups-->
         <item>0.57;0.80;0.61;0.61;0.80</item>
         <item>0.66;0.90;0.66;0.66;0.90</item>
         <item>1;2;3;4;5</item>
         <item>1;2;3;4;5</item>
         <item>1;2;3;4;5</item>
         <item>1;2;3;4;5</item>
+    </array>
+    <array name="factors_1">
+        <!--Pullups-->
+        <item>0.57;0.80;0.61;0.61;0.80</item>
+        <item>0.66;0.90;0.66;0.66;0.90</item>
+        <item>1;2;3;4;5</item>
+        <item>1;2;3;4;5</item>
+        <item>1;2;3;4;5</item>
+        <item>1;2;3;4;5</item>
+    </array>
+    <array name="factors_2">
+        <!--Squats-->
+        <item>0.57;0.80;0.61;0.61;0.80</item>
+        <item>0.66;0.90;0.66;0.66;0.90</item>
+        <item>1;2;3;4;5</item>
+        <item>1;2;3;4;5</item>
+        <item>1;2;3;4;5</item>
+        <item>1;2;3;4;5</item>
+    </array>
+    <!--Number of days between trainings-->
+    <array name="break_0">
+        <!--Pushups-->
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+    </array>
+    <array name="break_1">
+        <!--Pullups-->
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+    </array>
+    <array name="break_2">
+        <!--Squats-->
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
     </array>
 </resources>

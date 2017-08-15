@@ -38,6 +38,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.Training" />
         </activity>
+        <activity
+            android:name=".activities.AddNewExercise"
+            android:label="@string/title_activity_add_new_exercise"
+            android:parentActivityName=".activities.MainPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="stfn.personaltrainer.activities.MainPage" />
+        </activity>
     </application>
 
 </manifest>

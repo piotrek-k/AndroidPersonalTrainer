@@ -14,7 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.Random;
+import java.util.Collections;
+import java.util.Comparator;
 
 import stfn.personaltrainer.R;
 import stfn.personaltrainer.adapters.ExercisesAdapter;
@@ -41,11 +42,13 @@ public class MainPage extends AppCompatActivity implements LifecycleRegistryOwne
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Exercise e = new Exercise("Pompki");
-                e.setTestResult(23);
-                Random r = new Random();
-                e.setDayOfExercise(1);
-                evm.insertAsync(e);
+//                Exercise e = new Exercise("Pompki");
+//                e.setTestResult(23);
+//                Random r = new Random();
+//                e.setDayOfExercise(1);
+//                evm.insertAsync(e);
+                Intent intent = new Intent(view.getContext(), AddNewExercise.class);
+                startActivity(intent);
             }
         });
 
@@ -57,6 +60,13 @@ public class MainPage extends AppCompatActivity implements LifecycleRegistryOwne
             if (exercises.isEmpty()) {
                 evm.seedDatabase();
             }
+
+            Collections.sort(exercises, new Comparator<Exercise>() {
+                @Override
+                public int compare(Exercise exercise, Exercise t1) {
+                    return exercise.getNextWorkout().compareTo(t1.getNextWorkout());
+                }
+            });
 
             ExercisesAdapter lvAdapter = new ExercisesAdapter(MainPage.this, exercises);
             exerciseItems.setAdapter(lvAdapter);
